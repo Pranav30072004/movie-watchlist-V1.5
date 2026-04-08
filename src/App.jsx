@@ -15,12 +15,12 @@ function AppContent() {
     async function getMovies(formData) {
         try {
             const movieName = encodeURIComponent(formData.get('movie-search').toString().trim())
-            const response = await fetch(`http://www.omdbapi.com/?apikey=${apiKey}&s=${movieName}`)
+            const response = await fetch(`https://www.omdbapi.com/?apikey=${apiKey}&s=${movieName}`)
             const ResultsData = await response.json();
 
             const movieDetails = await Promise.all(
                 ResultsData.Search.map((movie) => {
-                    return fetch(`http://www.omdbapi.com/?apikey=${apiKey}&i=${movie.imdbID}`)
+                    return fetch(`https://www.omdbapi.com/?apikey=${apiKey}&i=${movie.imdbID}`)
                         .then(res => res.json());
                 })
             )

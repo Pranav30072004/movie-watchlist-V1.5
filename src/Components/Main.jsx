@@ -1,5 +1,5 @@
 import MovieCard from './MovieCard.jsx'
-
+import noDataImg from '../assets/no data.png'
 function Main(props) {
 
     const movieElements = props.moviesList.map((movie, index) => {
@@ -33,7 +33,7 @@ function Main(props) {
             >
                 {props.moviesList.length > 0 ? movieElements :
                     <div className={"default-look"}>
-                    <img src="./src/assets/no%20data.png"
+                    <img src={noDataImg}
                          alt="classic movie reel image"
                          className="no-data-img"/>
                     <p className="no-data-text">Start exploring</p>
