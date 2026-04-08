@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import {useState} from 'react'
 import {BrowserRouter, Routes, Route, useLocation} from 'react-router-dom'
 
 import Header from './Components/Header.jsx'
@@ -7,12 +7,18 @@ import Watchlist from './Components/Watchlist.jsx'
 import './CSS/index.css'
 
 function AppContent() {
+    // API variable
     const apiKey = import.meta.env.VITE_OMDB_KEY;
+    // State variables
     const [moviesList, setMoviesList] = useState([]);
     const [watchlist, setWatchlist] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+
+    // stable variables
     const location = useLocation();
 
     async function getMovies(formData) {
+        setIsLoading(true);
         try {
             const movieName = encodeURIComponent(formData.get('movie-search').toString().trim())
             const response = await fetch(`https://www.omdbapi.com/?apikey=${apiKey}&s=${movieName}`)
@@ -25,27 +31,26 @@ function AppContent() {
                 })
             )
 
-            setMoviesList(prevMoviesList => prevMoviesList = movieDetails)
+            setMoviesList(movieDetails)
 
         } catch (e) {
             console.error("Failed to fetch movie: ", e)
+        } finally {
+            setIsLoading(false);
         }
     }
 
-    function manipulateWatchlist(movie) {
+    function addToWatchlist(movie) {
         const alreadyExists = watchlist.some(watch => {
             return watch.imdbID === movie.imdbID
         })
         if(!alreadyExists) {
             setWatchlist((prevWatchlist) => [...prevWatchlist, movie])
         }
+    }
 
-        if(location.pathname === '/watchlist' && alreadyExists) {
-            setWatchlist((prevWatchlist) => {
-                    return prevWatchlist.filter(item => item.imdbID !== movie.imdbID)
-                }
-            )
-        }
+    function removeFromWatchlist(movie) {
+        setWatchlist(prevWatchlist => prevWatchlist.filter(item => item.imdbID !== movie.imdbID))
     }
 
     return(
@@ -53,10 +58,15 @@ function AppContent() {
             <Header page={location.pathname} />
             <Routes>
             <Route path={"/"} element = {
-                <Main getMovies={getMovies} moviesList={moviesList} manipulateWatchlist={manipulateWatchlist} />
+                <Main
+                    getMovies={getMovies}
+                    moviesList={moviesList}
+                    manipulateWatchlist={addToWatchlist}
+                    isLoading={isLoading}
+                />
             } />
             <Route path={"/watchlist"} element = {
-                <Watchlist watchlist={watchlist} manipulateWatchlist={manipulateWatchlist}/>
+                <Watchlist watchlist={watchlist} manipulateWatchlist={removeFromWatchlist}/>
             } />
         </Routes>
         </>

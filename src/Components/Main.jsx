@@ -2,8 +2,8 @@ import MovieCard from './MovieCard.jsx'
 import noDataImg from '../assets/no data.png'
 function Main(props) {
 
-    const movieElements = props.moviesList.map((movie, index) => {
-        return <MovieCard movie={movie} key={index} manipulateWatchlist={props.manipulateWatchlist} />
+    const movieElements = props.moviesList.map((movie) => {
+        return <MovieCard movie={movie} key={movie.imdbID} manipulateWatchlist={props.manipulateWatchlist} />
 
     })
 
@@ -31,13 +31,15 @@ function Main(props) {
             <section className={`list-section 
                                 ${props.moviesList.length === 0 ? 'empty' : null}`}
             >
-                {props.moviesList.length > 0 ? movieElements :
-                    <div className={"default-look"}>
-                    <img src={noDataImg}
-                         alt="classic movie reel image"
-                         className="no-data-img"/>
-                    <p className="no-data-text">Start exploring</p>
-                </div>}
+
+                {props.isLoading ? <p className={"loading-text"}>Searching...</p> :
+                    props.moviesList.length > 0 ? movieElements :
+                        <div className={"default-look"}>
+                            <img src={noDataImg}
+                                 alt="classic movie reel image"
+                                 className="no-data-img"/>
+                            <p className="no-data-text">Start exploring</p>
+                        </div>}
             </section>
         </main>
     )
