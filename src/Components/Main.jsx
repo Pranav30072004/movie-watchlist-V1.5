@@ -13,7 +13,6 @@ function Main(props) {
     })
 
     const totalPages = Math.floor(props.totalResults / 10);
-    console.log(totalPages);
     return (
         <main className={"movie-main"}>
             <search>
