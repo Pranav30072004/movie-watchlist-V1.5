@@ -2,8 +2,13 @@ import {Link} from 'react-router-dom'
 import MovieCard from './MovieCard.jsx'
 function Watchlist(props) {
 
-    const watchlistElements = props.watchlist.map((movie, index) => {
-       return <MovieCard movie={movie} key={movie.imdbID} manipulateWatchlist={props.manipulateWatchlist}/>
+    const watchlistElements = props.watchlist.map((movie) => {
+       return <MovieCard
+           movie={movie} key={movie.imdbID}
+           manipulateWatchlist={props.manipulateWatchlist}
+           watchlist={props.watchlist}
+           user={props.user}
+       />
     })
     return(
         <main className={"watchlist-main"}>

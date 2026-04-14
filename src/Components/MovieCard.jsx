@@ -3,6 +3,19 @@ import {Link, useLocation} from 'react-router-dom';
 function MovieCard(props) {
     const movie = props.movie
     const location = useLocation();
+    const isInWatchlist = props.watchlist.some(watch => watch.imdbID === movie.imdbID);
+
+    const buttonElement = location.pathname === '/watchlist'
+        ? <button className={"add-watchlist-btn"} onClick={() => props.manipulateWatchlist(movie)}>
+            <i className="fa-solid fa-circle-minus"></i> Remove from watchlist
+        </button>
+        : isInWatchlist ?
+            <button className={"add-watchlist-btn saved"} onClick={() => props.manipulateWatchlist(movie)}>
+                <i className={"fa-solid fa-circle-check"}></i> Saved
+            </button>
+            : <button className={'add-watchlist-btn'} onClick={() => props.manipulateWatchlist(movie)}>
+                <i className={"fa-solid fa-circle-plus"}></i> Watchlist
+            </button>
     return (
         <>
             <section className="movie">
@@ -15,10 +28,9 @@ function MovieCard(props) {
                     <div className="movie-detail">
                         <p>{movie.Runtime}</p>
                         <p>{movie.Genre}</p>
-                        <button className="add-watchlist-btn" onClick={() => props.manipulateWatchlist(movie)}>
-                            {location.pathname === '/' ? <><i className="fa-solid fa-circle-plus"></i> Watchlist</> :
-                                <><i className="fa-solid fa-circle-minus"></i> Watchlist</>}
-                        </button>
+                        {props.user ?
+                            buttonElement :
+                        <p className={"sign-in-prompt"}>Sign in to save to watchlist</p>}
                     </div>
                     <span className="movie-plot">{movie.Plot}</span>
                 </div>
