@@ -1,6 +1,16 @@
+import {useRef, useEffect} from "react";
 import MovieCard from './MovieCard.jsx'
 import noDataImg from '../assets/no data.png'
 function Main(props) {
+
+    // ref variable and useEffect function
+    const resultsRef = useRef(null);
+
+    useEffect(() => {
+        if(props.currentPage > 1) {
+            resultsRef.current.focus();
+        }
+    }, [props.currentUser]);
 
     const movieElements = props.moviesList.map((movie) => {
         return <MovieCard
@@ -29,33 +39,48 @@ function Main(props) {
                            placeholder={"Search for a movie"}
                            required
                     />
-                    <button id={"search-btn"} className={"search-btn"}>Search</button>
+                    <button id={"search-btn"} className={"search-btn"} aria-label={"Search"}>Search</button>
                 </form>
             </search>
 
 
-            <section className={`list-section 
-                                ${props.moviesList.length === 0 ? 'empty' : null}`}
+            <section
+                ref={resultsRef}
+                tabIndex="-1"
+                className={`list-section ${props.moviesList.length === 0 ? 'empty' : null}`}
+                aria-live={"polite"}
+                aria-atomic={false}
+                aria-label={"search-results"}
             >
                 {
-                    props.isLoading ? <div className={"loading-spinner"}></div> :
-                    props.noResults ? <p>No results found. Try a different title.</p> :
+                    props.isLoading ? <div className={"loading-spinner"}
+                                           role={"status"}
+                                           aria-label={"loading results"}></div> :
+                    props.noResults ? <p role={"status"}>No results found. Try a different title.</p> :
                         props.moviesList.length > 0 ? movieElements :
                             <div className={"default-look"}>
                                 <img src={noDataImg}
-                                     alt="classic movie reel image"
+                                     alt=""
                                      className="no-data-img"/>
                                 <p className="no-data-text">Start exploring</p>
                             </div>
                 }
                 {
                     props.totalResults > 10 &&
-                    <div className={"pagination-controls"}>
-                        <button className={"pagination-btn"} onClick={() => props.changePage(props.currentPage - 1)} disabled={props.currentPage === 1}>
+                    <div className={"pagination-controls"} role={"navigation"} aria-label={"Search results pagination"}>
+                        <button className={"pagination-btn"}
+                                onClick={() => props.changePage(props.currentPage - 1)}
+                                disabled={props.currentPage === 1}
+                                aria-label={`Go to previous page. Currently on page ${props.currentPage}`}
+                        >
                             Previous
                         </button>
                         <span>{props.currentPage} of {totalPages}</span>
-                        <button className={"pagination-btn"} onClick={() => props.changePage(props.currentPage + 1)} disabled={props.currentPage === totalPages}>
+                        <button className={"pagination-btn"}
+                                onClick={() => props.changePage(props.currentPage + 1)}
+                                disabled={props.currentPage === totalPages}
+                                aria-label={`Go to next page. Currently on page ${props.currentPage}`}
+                        >
                             Next
                         </button>
                     </div>

@@ -6,28 +6,41 @@ function MovieCard(props) {
     const isInWatchlist = props.watchlist.some(watch => watch.imdbID === movie.imdbID);
 
     const buttonElement = location.pathname === '/watchlist'
-        ? <button className={"add-watchlist-btn"} onClick={() => props.manipulateWatchlist(movie)}>
+        ? <button
+            className={"add-watchlist-btn"}
+            onClick={() => props.manipulateWatchlist(movie)}
+            aria-label={`Remove ${movie.Title} from watchlist`}>
             <i className="fa-solid fa-circle-minus"></i> Remove from watchlist
         </button>
         : isInWatchlist ?
-            <button className={"add-watchlist-btn saved"} onClick={() => props.manipulateWatchlist(movie)}>
+            <button
+                className={"add-watchlist-btn saved"}
+                onClick={() => props.manipulateWatchlist(movie)}
+                aria-label={`${movie.Title} is saved to your watchlist`}
+                aria-pressed={"true"}
+            >
                 <i className={"fa-solid fa-circle-check"}></i> Saved
             </button>
-            : <button className={'add-watchlist-btn'} onClick={() => props.manipulateWatchlist(movie)}>
+            : <button
+                className={'add-watchlist-btn'}
+                onClick={() => props.manipulateWatchlist(movie)}
+                aria-label={`Add ${movie.Title} to your watchlist`}
+                aria-pressed={"false"}
+            >
                 <i className={"fa-solid fa-circle-plus"}></i> Watchlist
             </button>
     return (
         <>
-            <section className="movie">
-                <img src={movie.Poster} alt={movie.Title}/>
+            <section className="movie" aria-label={movie.Title}>
+                <img src={movie.Poster} alt={`${movie.Title} Poster`} />
                 <div className="movie-data">
                     <div className="movie-overview">
                         <h2 className="movie-title">{movie.Title}</h2>
-                        <h3 className="movie-rating">⭐ {movie.imdbRating}</h3>
+                        <h3 className="movie-rating" aria-label={`Rating: ${movie.imdbRating} out of 10`}>⭐ {movie.imdbRating}</h3>
                     </div>
                     <div className="movie-detail">
-                        <p>{movie.Runtime}</p>
-                        <p>{movie.Genre}</p>
+                        <p arial-label={`Runtime: ${movie.Runtime}`}>{movie.Runtime}</p>
+                        <p arial-label={`Genre: ${movie.Genre}`}>{movie.Genre}</p>
                         {props.user ?
                             buttonElement :
                         <p className={"sign-in-prompt"}>Sign in to save to watchlist</p>}
@@ -35,7 +48,7 @@ function MovieCard(props) {
                     <span className="movie-plot">{movie.Plot}</span>
                 </div>
             </section>
-            <hr/>
+            <hr aria-hidden={"true"}/>
         </>
     )
 }

@@ -200,7 +200,7 @@ h1, h2, h3, h4, h5, h6, p {
     color: #16a34a;
 }
 .movie-plot {
-    color: #6B7280;
+    color: #3C4048;
     font-size: 0.90rem;
     font-weight: 400;
     margin-left: 20px;
@@ -270,4 +270,39 @@ hr {
     color: #363636;
     font-size: 0.875rem;
     font-weight: 700;
+}
+@media (max-width: 940px) {
+    hr {
+        width: 90%;
+    }
+}
+@media (max-width:540px) {
+    .watchlist-header {
+        padding: 15px;
+        justify-content: space-between;
+    }
+    .watchlist-header > h1 {
+        font-size: 1.5rem;
+    }
+    .watchlist-btn, .authentication-btn {
+        font-size: 0.85rem;
+        padding: 4px 8px;
+    }
+    .signed-in-text {
+        font-size: 0.65rem;
+    }
+}
+
+@media (max-width: 500px) {
+    .movie-detail {
+        gap: 15px;
+        flex-wrap: nowrap;
+    }
+    .movie-detail > p {
+        white-space: nowrap;
+    }
+    .movie > img {
+        width: 80px;
+        height: 120px;
+    }
 }

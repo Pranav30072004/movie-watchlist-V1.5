@@ -11,11 +11,11 @@ function Watchlist(props) {
        />
     })
     return(
-        <main className={"watchlist-main"}>
+        <main className={"watchlist-main"} aria-label={"My watchlist"}>
             {props.watchlist.length > 0 ? watchlistElements :
-                <div className={"empty-watchlist"}>
+                <div className={"empty-watchlist"} role={"status"}>
                     <h1>Your watchlist is looking a little empty...</h1>
-                    <Link to={"/"} className={"home-btn"}><i className="fa-solid fa-circle-plus"></i> Let's add some movies!</Link>
+                    <Link to={"/"} className={"home-btn"} aria-label={"Go to search to add movies"}><i className="fa-solid fa-circle-plus" aria-hidden={"true"}></i> Let's add some movies!</Link>
                 </div>
             }
         </main>
